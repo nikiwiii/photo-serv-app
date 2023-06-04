@@ -12,17 +12,41 @@ app.use(cors())
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
+let files = []
+
 app.get('/getFiles', (req, res) => {
-  let fileslist = fs.readdirSync('./upload/')
-  let files = []
-  fileslist.forEach(e => {
-    files.push({ name: e })
-  });
+  files = fs.readdirSync('./upload/')
   res.header("content-type", "application/json")
   console.log(files);
   res.send({ files })
 })
 
+app.post('/deleteSth' , (req, res) => {
+  const id = req.body.id
+  if (files.length >= id) {
+    fs.rmSync('./upload/' + files[id], {force: true})
+    files = fs.readdirSync('./upload/')
+    console.log(files);
+    res.header("content-type", "application/json")
+    res.send(files)
+  }
+})
+
+app.post('/deleteSelects', (req, res) => {
+  const ids = req.body.ids
+  ids.forEach((e) => {
+    fs.rmSync('./upload/' + files[e], {force: true})
+  });
+  files = fs.readdirSync('./upload/')
+  res.header("content-type", "application/json")
+  res.send(files)
+})
+
+app.post('/newName', (req, res) => {
+  const oldName = req.body.original
+  const newName = req.body.new
+  fs.renameSync('./upload/' + oldName, './upload/' + newName)
+})
 // let upload = multer({
 //   dest: './upload/'
 // });
