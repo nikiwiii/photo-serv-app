@@ -64,7 +64,6 @@ function App() {
   }
   const rename = async(originalName) => {
     if (!ipValue.includes('x')){
-      updatePictures([])
         const newName = prompt('podaj nową nazwę (pamietaj o formacie): ')
         await fetch('http://' + ipValue + ':3001/newName', {
           method: 'POST',
@@ -74,7 +73,7 @@ function App() {
           },
           body: JSON.stringify({original: originalName, new: newName}),
         })
-        .then(() => getShit())
+        .then(updatePictures([]))
       }  
       else {
         alert('wpisz swoje ip')

@@ -25,10 +25,7 @@ app.post('/deleteSth' , (req, res) => {
   const id = req.body.id
   if (files.length >= id) {
     fs.rmSync('./upload/' + files[id], {force: true})
-    files = fs.readdirSync('./upload/')
-    console.log(files);
-    res.header("content-type", "application/json")
-    res.send(files)
+    res.send('')
   }
 })
 
@@ -37,15 +34,14 @@ app.post('/deleteSelects', (req, res) => {
   ids.forEach((e) => {
     fs.rmSync('./upload/' + files[e], {force: true})
   });
-  files = fs.readdirSync('./upload/')
-  res.header("content-type", "application/json")
-  res.send(files)
+  res.send('')
 })
 
 app.post('/newName', (req, res) => {
   const oldName = req.body.original
   const newName = req.body.new
   fs.renameSync('./upload/' + oldName, './upload/' + newName)
+  res.send('')
 })
 // let upload = multer({
 //   dest: './upload/'
